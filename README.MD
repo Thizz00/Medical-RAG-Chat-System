@@ -1,24 +1,19 @@
-
 # Medical RAG Chat System
 
-A medical chat system that enables user interaction with an AI assistant capable of answering both medical and general queries. Depending on the type of query, the appropriate processing method is selected—either a QA chain with vector store search or a direct LLM invocation.
+A medical chat system that enables user interaction with an AI assistant capable of answering both medical and general queries. Depending on the type of query, the appropriate processing method is selected-either a QA chain with vector store search or a direct LLM invocation.
 
-<video src='/docs/streamlit.mp4'>
+![streamlit](/docs/streamlit.gif)
 
-## UML Diagrams
+## UML Diagram
 
 ![UML Screenshot](/docs/drawio.png)
 
 
 ## Main Components
 
-### main.py
-- **User Interface:** Uses Streamlit to build the chat interface, display message history, and accept user queries.
-- **Query Processing Logic:** When a query is submitted, it is added to the session and passed to the `process_query` function, which decides whether to use the QA chain (for medical queries) or a direct LLM call (for general queries).
-
 ### vector_store.py
 - **Vector Store Initialization:** Utilizes Chroma and HuggingFaceEmbeddings to store and search medical documents.
-- **Data Indexing:** The `index_data` function adds documents (texts and metadata (in future)) to the vector store, enabling the later retrieval of similar content.
+- **Data Indexing:** The `index_data` function adds documents (texts and metadata) to the vector store, enabling the later retrieval of similar content.
 
 ### qa_chain.py
 - **QA Chain:** Initializes a RetrievalQA chain using LlamaMedLLM as the model for medical queries.
@@ -38,6 +33,11 @@ A medical chat system that enables user interaction with an AI assistant capable
 ### config.py
 - **Configuration:** Contains constants and settings for the entire project, including logging parameters, HTTP request settings, LLM model details, prompts, QA chain configuration, vector store settings, and the zero-shot model configuration.
 
+
+### main.py
+- **User Interface:** Uses Streamlit to build the chat interface, display message history, and accept user queries.
+- **Query Processing Logic:** When a query is submitted, it is added to the session and passed to the `process_query` function, which decides whether to use the QA chain (for medical queries) or a direct LLM call (for general queries).
+
 ## Deployment and Initialization Setup
 
 ### entrypoint.sh
@@ -46,7 +46,7 @@ A medical chat system that enables user interaction with an AI assistant capable
 - **Startup:** Exports necessary environment variables and launches the Streamlit app.
 
 ### Dockerfile
-- **Base Image & Environment Setup:** Uses Python 3.10 as the base image, sets up the working directory, and installs required system packages.
+- **Base Image & Environment Setup:** Uses Python 3.12 as the base image, sets up the working directory, and installs required system packages.
 - **Dependency Installation:** Installs Python dependencies from `requirements.txt` along with development tools (Black, Flake8, pytest, Selenium).
 - **Pre-fetching Models:** Downloads necessary transformer models (e.g., from sentence-transformers and facebook/bart-large-mnli) during the build process.
 - **Application Files & Permissions:** Copies application files, sets environment variables, exposes port 8501, and designates `entrypoint.sh` as the entry point.
@@ -68,8 +68,7 @@ A medical chat system that enables user interaction with an AI assistant capable
 1. **Clone the Repository:**
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/Thizz00/Medical-RAG-Chat-System.git
    ```
 
 2. **Build and Start Services with Docker Compose:**
