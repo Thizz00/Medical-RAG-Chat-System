@@ -1,0 +1,13 @@
+beautifulsoup4==4.13.3
+chromadb==0.6.3
+langchain==0.3.19
+langchain_community==0.3.18
+ollama==0.4.7
+pytest==8.3.4
+Requests==2.32.3
+selenium==4.29.0
+sentence-transformers==3.4.1
+streamlit==1.42.0
+torch==2.6.0
+transformers==4.49.0
+webdriver_manager==4.0.2
