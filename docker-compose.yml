@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_pull
+    environment:
+      OLLAMA_HOST: "0.0.0.0"
+    ports:
+      - "11434:11434"
+    entrypoint: >
+      /bin/sh -c "ollama start & sleep 30 &&
+      ollama list &&
+      ollama pull medllama2:latest &&
+      ollama pull deepseek-r1:latest &&
+      ollama list &&
+      wait"
+    restart: unless-stopped
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ollama_data:/root/.ollama
+
+  selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: selenium_chrome
+    ports:
+      - "4444:4444"
+    shm_size: "2g"
+    networks:
+      - my_network
+
+  app:
+    build: .
+    container_name: medical_rag_chat
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    depends_on:
+      - ollama
+      - selenium
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
+    restart: unless-stopped
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  ollama_data:
